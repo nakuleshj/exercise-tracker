@@ -21,4 +21,22 @@ router.route('/add').post((req,res)=>{
     .then(()=>res.json('Exercise Added!'))
     .catch(err=>res.status(400).json('Error: '+err));
 });
+router.route('/:id').get((req,res)=>{
+    Exercise.findById(req.params.id).then(
+        exercise=>res.json(exercise)
+    ).catch(err=>res.status(400).json('Error: '+err));
+});
+router.route('/:id').delete((req,res)=>{
+    Exercise.findByIdAndDelete(req.params.id).then(
+        ()=>res.json('Exercise Deleted')
+    ).catch(err=>res.status(400).json('Error: '+err));
+});
+router.route('/update/:id').post((req,res)=>{
+    Exercise.findByIdAndUpdate(req.params.id,{
+         username:req.body.username,
+     description:req.body.description,
+     duration:Number(req.body.duration),
+     date:Date.parse(req.body.date),
+    }).then(()=>res.json('Exercise updated')).catch(err=>res.status(400).json('Error: '+err));
+});
 module.exports=router;
